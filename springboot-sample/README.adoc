@@ -33,8 +33,16 @@ We want to be able to generate our config file for the local dev environment, an
 
 * we rely on the common/shared configuration (i.e. not associated to a specific profile) that calls the _prepare_ goal of the plugin. The _prepare_ goal will generate a *confd* _toml_ configuration file that would target a final generated file in the `target/generated-configuration` directory
 * we activate a `run-local` profile that triggers the _generate_ goal that will process the template according to our local dictionary stored in `src/main/confd/dictionary/local.dict`
-* because we want the build to be independant of the dev environment, we use the _java-processor_ that doesn't rely on the _confd_ binary
-* the `run-local` profile also specifies to springboot where it can find its config file (through the springboot plugin)
+* because we want the build to be independent of the dev environment, we use the _java-processor_ that doesn't rely on the _confd_ binary
+* the `run-local` profile also specifies to springboot where it can find its config file (through the springboot plugin, with the customized argument `--spring.config.location=file:target/generated-configuration/application.yml`
+
+To test your project locally, use `mvn spring-boot:run` or the following combo to use the fatjar generated:
+
+[source, shell]
+----
+mvn clean package
+java -jar target/myfatjar.jar --spring.config.location=file:target/generated-configuration/application.yml
+----
 
 === Get ready for the delivery
 
